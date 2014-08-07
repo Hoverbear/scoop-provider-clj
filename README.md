@@ -1,5 +1,16 @@
-# Clojure Starter
+### Prereqs
 
-A starter for my Clojure Projects.
+* Docker
 
+### Build
+
+```bash
+make
+```
+
+### Run
+
+```bash
+make run
+```
 
