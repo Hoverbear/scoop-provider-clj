@@ -43,24 +43,24 @@
 (defn get-result
   "Gets a specific result"
   [id]
-  ; TODO
-  )
+  (collections/find-one-as-map db "results" {:execution_id id}))
 (defn get-visualization
   "Gets a single visualization"
   [id]
   ; TODO: Other computations.
-  (let [visualization (collections/find-map-by-id db "queries" (ObjectId. id))
-        executions (map get-result (:executions visualization))]
-    ; TODO: Code
-    ))
+  (let [unprocessed-visualization (collections/find-map-by-id db "queries" (ObjectId. id))
+        execution-ids (for [execution (:executions unprocessed-visualization)] (:_id execution))
+        executions (map get-result execution-ids)]
+    (assoc unprocessed-visualization :executions executions)))
+
 (defn visualization-route
   "Responds withs a single visualization"
   [request id]
-  (try
+  ;(try
     {:status 200
      :headers {"Content-Type" "application/json; charset=utf-8"}
-     :body (chesire/encode (get-visualization id))}
-    (catch Exception e {:status 500 :body (str e )})))
+     :body (chesire/encode (get-visualization id))})
+   ; (catch Exception e {:status 500 :body (str e )})))
 
 ; Route declaration.
 (defroutes app
