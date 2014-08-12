@@ -7,7 +7,8 @@
             [cheshire.core         :as chesire]
             [monger.core           :as monger]
             [monger.collection     :as collections]
-            [monger.json])
+            [monger.json]
+            [clojure.walk])
   (:import [com.mongodb MongoOptions ServerAddress])
   (:import org.bson.types.ObjectId)
   (:gen-class))
@@ -44,14 +45,26 @@
   "Gets a specific result"
   [id]
   (collections/find-one-as-map db "results" {:execution_id id}))
+(defn result-cleaner
+  "Cleans a specific result to fit with the expected data returned"
+  [result]
+  (let [value (dissoc (:value result) :_id :query_id :created_at)]
+    {:updated_at (:updated_at result)
+     :value value}))
 (defn get-visualization
   "Gets a single visualization"
   [id]
-  ; TODO: Other computations.
-  (let [unprocessed-visualization (collections/find-map-by-id db "queries" (ObjectId. id))
-        execution-ids (for [execution (:executions unprocessed-visualization)] (:_id execution))
-        executions (map get-result execution-ids)]
-    (assoc unprocessed-visualization :executions executions)))
+  (let [db-entry (collections/find-map-by-id db "queries" (ObjectId. id))
+        execution-ids (for [execution (:executions db-entry)] (:_id execution))
+        executions (filter #(= "complete" (:status %1)) (map get-result execution-ids))
+        by-endpoint (group-by :endpoint_id executions)
+        cleaned (into {} (map (fn [[k v]] [k (map result-cleaner v)]) by-endpoint))]
+    {:title (:title db-entry)
+     :description (:description db-entry)
+     :data cleaned
+     :meta {
+            :reduce (:reduce db-entry)
+            :map (:map db-entry)}}))
 
 (defn visualization-route
   "Responds withs a single visualization"
