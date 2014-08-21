@@ -4,24 +4,30 @@
         <listener-class>org.projectodd.wunderboss.wildfly.ServletListener</listener-class>
     </listener>
 
-    <!-- Users and Admins -->
     <security-constraint>
         <auth-constraint>
-            <role-name>user</role-name>
-            <role-name>admin</role-name>
+            <role-name>query-list</role-name>
         </auth-constraint>
         <web-resource-collection>
-            <web-resource-name>locked</web-resource-name>
+            <web-resource-name>Query List</web-resource-name>
             <url-pattern>/api</url-pattern>
-            <!-- Wildcard. Covers /api/foo, /api/foo/bar, etc -->
-            <url-pattern>/api/*</url-pattern>
         </web-resource-collection>
     </security-constraint>
 
+    <security-constraint>
+        <auth-constraint>
+          <role-name>aggregate-results</role-name>
+        </auth-constraint>
+        <web-resource-collection>
+          <web-resource-name>Aggregate Results</web-resource-name>
+          <url-pattern>/api/*</url-pattern>
+        </web-resource-collection>
+    </security-constraint>
+    
     <!-- Keycloak conf -->
     <login-config>
         <auth-method>KEYCLOAK</auth-method>
-        <realm-name>master</realm-name>
+        <realm-name>SCOOP</realm-name>
     </login-config>
 
 </web-app>

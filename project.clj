@@ -10,7 +10,8 @@
                  [clj-http "0.9.2"]
                  [cheshire "5.3.1"]
                  [com.novemberain/monger "2.0.0" :exclusions [com.google.guava/guava]]
-                 [com.google.guava/guava "16.0.1"]]
+                 [com.google.guava/guava "16.0.1"]
+                 [clj-time "0.8.0"]]
   :repositories [["Immutant incremental builds"
                   "http://downloads.immutant.org/incremental/"]]
   :plugins [[lein-immutant "2.0.0-SNAPSHOT"]]

@@ -7,6 +7,8 @@
             [cheshire.core         :as chesire]
             [monger.core           :as monger]
             [monger.collection     :as collections]
+            [clj-time.format       :as date]
+            [clj-time.coerce       :as coerce]
             [monger.json]
             [clojure.walk])
   (:import [com.mongodb MongoOptions ServerAddress])
@@ -14,8 +16,9 @@
   (:gen-class))
 
 ; MongoDB Details
-(def conn (monger/connect {:host "database"}))
-(def db   (monger/get-db conn "query_composer_development"))
+(def db (monger/get-db 
+          (monger/connect {:host "database"})
+          "query_composer_development"))
 
 ; Gets the session.
 (defn get-session
@@ -49,7 +52,7 @@
   "Cleans a specific result to fit with the expected data returned"
   [result]
   (let [value (dissoc (:value result) :_id :query_id :created_at)]
-    {:updated_at (:updated_at result)
+    {:endpoint (:endpoint_id result)
      :value value}))
 (defn get-visualization
   "Gets a single visualization"
@@ -57,8 +60,8 @@
   (let [db-entry (collections/find-map-by-id db "queries" (ObjectId. id))
         execution-ids (for [execution (:executions db-entry)] (:_id execution))
         executions (filter #(= "complete" (:status %1)) (map get-result execution-ids))
-        by-endpoint (group-by :endpoint_id executions)
-        cleaned (into {} (map (fn [[k v]] [k (map result-cleaner v)]) by-endpoint))]
+        by-date (group-by #(date/unparse (date/formatter "yyyy-MM-dd") (coerce/from-date (:updated_at %1))) executions)
+        cleaned (into {} (map (fn [[k v]] [k (map result-cleaner v)]) by-date))]
     {:title (:title db-entry)
      :description (:description db-entry)
      :data cleaned
