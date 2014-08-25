@@ -62,7 +62,8 @@
         executions (filter #(= "complete" (:status %1)) (map get-result execution-ids))
         by-date (group-by #(date/unparse (date/formatter "yyyy-MM-dd") (coerce/from-date (:updated_at %1))) executions)
         cleaned (into {} (map (fn [[k v]] [k (map result-cleaner v)]) by-date))]
-    {:title (:title db-entry)
+    {:_id (:_id db-entry)
+     :title (:title db-entry)
      :description (:description db-entry)
      :data cleaned
      :meta {
@@ -72,11 +73,9 @@
 (defn visualization-route
   "Responds withs a single visualization"
   [request id]
-  ;(try
-    {:status 200
-     :headers {"Content-Type" "application/json; charset=utf-8"}
-     :body (chesire/encode (get-visualization id))})
-   ; (catch Exception e {:status 500 :body (str e )})))
+  {:status 200
+   :headers {"Content-Type" "application/json; charset=utf-8"}
+   :body (chesire/encode (get-visualization id))})
 
 ; Route declaration.
 (defroutes app
