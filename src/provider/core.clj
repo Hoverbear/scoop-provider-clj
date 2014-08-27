@@ -2,7 +2,6 @@
   (:use compojure.core)
   (:require [compojure.route       :as route]
             [immutant.web          :as web]
-            [immutant.web.servlet  :as servlet]
             [clj-http.client       :as client]
             [cheshire.core         :as chesire]
             [monger.core           :as monger]
@@ -88,4 +87,4 @@
   "Start the server"
   [& args]
   ; Start the server.
-  (web/run (servlet/create-servlet app) :port 8080))
+  (web/run app :port 8080))

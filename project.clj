@@ -4,17 +4,15 @@
   :license {:name "MPL"
             :url "http://choosealicense.com/licenses/mpl-2.0/"}
   :dependencies [[org.clojure/clojure "1.6.0"]
-                 [org.immutant/immutant "2.x.incremental.200"]
                  [compojure "1.1.8"]
+                 [org.immutant/immutant "2.0.0-alpha1"]
                  [cider/cider-nrepl "0.7.0-SNAPSHOT"]
                  [clj-http "0.9.2"]
                  [cheshire "5.3.1"]
                  [com.novemberain/monger "2.0.0" :exclusions [com.google.guava/guava]]
                  [com.google.guava/guava "16.0.1"]
                  [clj-time "0.8.0"]]
-  :repositories [["Immutant incremental builds"
-                  "http://downloads.immutant.org/incremental/"]]
-  :plugins [[lein-immutant "2.0.0-SNAPSHOT"]]
+  :plugins [[lein-immutant "2.0.0-alpha1"]]
   :main ^:skip-aot provider.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all}}
@@ -27,12 +25,11 @@
                   cider.nrepl.middleware.stacktrace/wrap-stacktrace
                   cider.nrepl.middleware.trace/wrap-trace]}
   ; Plugin configuration.
-  :ring {:handler learning.core/app}
   :immutant {
      :war {
         :dev? false
         :resource-paths ["resources"]
         :nrepl {
-          :host "0.0.0.0" ; Don't do this in production, rather obviously.
+          :interface "0.0.0.0" ; Don't do this in production, rather obviously.
           :port 8888
           :start? true}}})

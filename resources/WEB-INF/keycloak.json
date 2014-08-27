@@ -1,11 +1,11 @@
 {
   "realm": "SCOOP",
-  "realm-public-key": "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC2tfzg2l33ZJm1gU9esJ8bdteipxvvLRPpz2mk0J+VSAQQDuutHKsc7gLUoG3fb2IVwgF8dXWXfOdmRMBbn64ptEb+lrw1QbJBSEN8aPEK67wqhM8TnnPPZ8gTexTQX4KtsRKvnKpzslqL4GuEHc3AiCuJTvJDWaSXmHuHrRmq0QIDAQAB",
+  "realm-public-key": "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCotmQMLRbVVGU9B7558784XvdY4uE1iq3cC+gBIzcVUfcDvwUaOhdB3r+fXQRuO5sd13X8BHL8nUISRQ6r90vX5tLR6+WNKUSb0UcD/wYYGshsaDDz+a4SOQMqEtfNYU+9tf6wO02/c3gUHmkGzFBr3hMMIp6IiC11HyCzB/1rwwIDAQAB",
   "auth-server-url": "http://auth.scoop.local:8080/auth",
   "ssl-required": "external",
   "resource": "provider",
   "credentials": {
-    "secret": "ceb7f3cd-a241-45aa-8119-dccc7af95d7e"
+    "secret": "e0731cc9-066b-4fb9-a503-8c4c352d1b82"
   },
   "use-resource-role-mappings": true
 }
